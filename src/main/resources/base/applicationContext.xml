@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- component scan package -->
+	<context:component-scan base-package="com.HKUST.gMission.SpacialCroudsourcing" />
+	<context:annotation-config />
+
+	<!-- property placeholder -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/jdbc.properties</value>
+				<value>classpath:/index.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- jdbc configuration -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="mysqlSource" />
+    </bean>
+	<bean id="mysqlSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${mysql.url}" />
+        <property name="username" value="${mysql.username}" />
+        <property name="password" value="${mysql.password}" />
+    </bean>
+	
+	<bean id="indexWrapper"
+        class="com.HKUST.gMission.SpacialCroudsourcing.action.RequestHandler">
+        <constructor-arg index="0" value="${index.path}" />
+    </bean>
+    
+    <bean id="indexLoader"
+        class="com.HKUST.gMission.SpacialCroudsourcing.IndexLoader">
+        <constructor-arg index="0" ref="jdbcTemplate" />
+        <constructor-arg index="1" ref="indexWrapper" />
+        <constructor-arg index="2" value="${index.loader.enable}" />
+    </bean>
+</beans>

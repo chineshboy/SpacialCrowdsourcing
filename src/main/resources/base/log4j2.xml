@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true">
+    <Appenders>
+        <Appender type="Console" name="STDOUT">
+            <Layout type="PatternLayout" pattern="%-d{yyyy-MM-dd HH:mm:ss} [%l] [%p] %m%n"/>
+        </Appender>
+        <Appender type="File" name="Default" fileName="../logs/default.log">
+            <Layout type="PatternLayout" pattern="%-d{yyyy-MM-dd HH:mm:ss} [%l] [%p] %m%n"/>
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Appender>
+        <Appender type="File" name="Debug" fileName="../logs/debug.log">
+            <Layout type="PatternLayout" pattern="%-d{yyyy-MM-dd HH:mm:ss} [%l] [%p] %m%n"/>
+            <Filters>
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Appender>
+        <Appender type="File" name="Error" fileName="../logs/error.log">
+            <Layout type="PatternLayout" pattern="%-d{yyyy-MM-dd HH:mm:ss} [%l] [%p] %m%n"/>
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Appender>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.HKUST.gMission.SpacialCroudsourcing" level="debug" additivity="true">
+            <AppenderRef ref="Default"/>
+            <AppenderRef ref="Error"/>
+            <AppenderRef ref="Debug"/>
+        </Logger>
+        <Root level="trace">
+            <AppenderRef ref="Error"/>
+        </Root>
+    </Loggers>
+</Configuration>
